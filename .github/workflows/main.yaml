@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: pipeline
+    name: pipeline python fastapi
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,11 +19,21 @@ jobs:
           curl -o bin/sbot -L https://github.com/restechnica/semverbot/releases/download/v$SEMVERBOT_VERSION/sbot-linux-amd64
           chmod +x bin/sbot
 
+      - name: go to correct dir
+        run: cd ./python/fastapi
+
       - name: make venv
         run: python -m venv venv
 
       - name: activate venv
         run: . venv/bin/activate
+
+      - name: install project dependancies 
+        run: pip install poetry
+          poetry install 
+
+      - name: update version
+        run: sbot update version
 
       - name: release
         run: sbot release version
