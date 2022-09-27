@@ -28,7 +28,7 @@ jobs:
       - name: activate venv
         run: . venv/bin/activate
 
-      - name: install project dependancies 
+      - name: install project dependencies 
         run: pip install poetry
           poetry install 
 
