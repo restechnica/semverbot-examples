@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fastapi"
+name = "fastapi-demo"
 version = "0.0.0"
 description = "This is an example on how to use SBOT with Fastapi"
 authors = ["ToneVDB <vdbtone@gmail.com>"]
