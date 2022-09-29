@@ -1,0 +1,48 @@
+name: main
+
+on:
+  push:
+    branches: [ main ]
+
+
+jobs:
+  build:
+    name: pipeline python fastapi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install sbot
+        run: SEMVERBOT_VERSION=1.1.0
+          mkdir bin
+          echo "$(pwd)/bin" >> $GITHUB_PATH
+          curl -o bin/sbot -L https://github.com/restechnica/semverbot/releases/download/v$SEMVERBOT_VERSION/sbot-linux-amd64
+          chmod +x bin/sbot
+
+      - name: go to correct dir
+        run: cd ./python/fastapi
+
+      - name: make venv
+        run: python -m venv venv
+
+      - name: activate venv
+        run: . venv/bin/activate
+
+      - name: install project dependencies 
+        run: pip install poetry
+          poetry install 
+
+      - name: update version
+        run: sbot update version
+
+      - name: release
+        run: sbot release version
+
+      - name: push
+        run: sbot push version
+
+      - name: generate version file
+        run: invoke get-version
+
+      - name: deploy
+        run: invoke deploy
